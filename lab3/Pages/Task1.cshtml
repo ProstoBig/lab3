@@ -1,0 +1,22 @@
+﻿@page
+@model Lab3.Pages.Task1Model
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>task1</title>
+</head>
+<body>
+    <h1>Завдання 1</h1>
+
+    <h2>Кількість жіночих працівників з премією: @Model.FactoryViewModel.FemaleEmployeesWithBonusCount</h2>
+
+    <h2>Максимальна зарплата для кожного цеху:</h2>
+    @foreach (var department in Model.FactoryViewModel.MaxSalaryByDepartment)
+    {
+        <p>Цех @department.Key: @department.Value</p>
+    }
+</body>
+</html>
