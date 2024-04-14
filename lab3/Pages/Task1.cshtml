@@ -13,10 +13,5 @@
 
     <h2>Кількість жіночих працівників з премією: @Model.FactoryViewModel.FemaleEmployeesWithBonusCount</h2>
 
-    <h2>Максимальна зарплата для кожного цеху:</h2>
-    @foreach (var department in Model.FactoryViewModel.MaxSalaryByDepartment)
-    {
-        <p>Цех @department.Key: @department.Value</p>
-    }
 </body>
 </html>

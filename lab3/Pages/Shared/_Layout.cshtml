@@ -27,13 +27,16 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Task1">Task1</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Task2">Task2</a>
+                            </li>
                         }
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (Context.Session.GetString("Username") != null)
                         {
                             <form method="post" asp-page="/Login" asp-page-handler="Logout">
-                                <button type="submit" class="btn btn-primary">Logout</button>
+                                <button type="submit" class="btn btn-primary">Вихід</button>
                             </form>
                         }
                         else

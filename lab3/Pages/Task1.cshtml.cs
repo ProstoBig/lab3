@@ -34,21 +34,6 @@ namespace Lab3.Pages
                 }
             }
             FactoryViewModel.FemaleEmployeesWithBonusCount = femaleEmployeesWithBonusCount;
-
-            // Логіка для максимальної зарплати за цехом за стаж від 10 до 20
-            Dictionary<int, double> maxSalaryByDepartment = new Dictionary<int, double>();
-            foreach (var factory in factories)
-            {
-                if (factory.Experience >= 10 && factory.Experience <= 20)
-                {
-                    double totalSalary = factory.Salary + (bonuses.ContainsKey(factory.EmployeeCode) ? bonuses[factory.EmployeeCode] : 0);
-                    if (!maxSalaryByDepartment.ContainsKey(factory.DepartmentNumber) || totalSalary > maxSalaryByDepartment[factory.DepartmentNumber])
-                    {
-                        maxSalaryByDepartment[factory.DepartmentNumber] = totalSalary;
-                    }
-                }
-            }
-            FactoryViewModel.MaxSalaryByDepartment = maxSalaryByDepartment;
         }
     }
 }
