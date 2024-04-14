@@ -28,3 +28,4 @@ C:\Users\Олександр\source\repos\lab3\lab3\obj\Debug\net8.0\refint\lab3.
 C:\Users\Олександр\source\repos\lab3\lab3\obj\Debug\net8.0\lab3.pdb
 C:\Users\Олександр\source\repos\lab3\lab3\obj\Debug\net8.0\lab3.genruntimeconfig.cache
 C:\Users\Олександр\source\repos\lab3\lab3\obj\Debug\net8.0\ref\lab3.dll
+C:\Users\Олександр\source\repos\lab3\lab3\obj\Debug\net8.0\lab3.sourcelink.json
