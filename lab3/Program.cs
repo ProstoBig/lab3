@@ -1,11 +1,15 @@
+using Lab3.Services;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<DataReader>();
 
 var app = builder.Build();
 

@@ -73,5 +73,35 @@ namespace Lab3.Services
 
             return bonuses;
         }
+        public List<User> ReadUsers(string filePath)
+        {
+            List<User> users = new List<User>();
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        string[] parts = line.Split(',');
+
+                        if (parts.Length == 2)
+                        {
+                            User user = new User();
+                            user.Username = parts[0];
+                            user.Password = parts[1];
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading the file: " + ex.Message);
+            }
+
+            return users;
+        }
     }
 }
