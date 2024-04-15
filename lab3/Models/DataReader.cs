@@ -44,10 +44,9 @@ namespace Lab3.Services
             return factories;
         }
 
-        public Dictionary<int, double> ReadBonuses(string filePath)
+        public List<Bonus> ReadBonusList(string filePath)
         {
-            Dictionary<int, double> bonuses = new Dictionary<int, double>();
-
+            List<Bonus> bonuses = new List<Bonus>();
             try
             {
                 using (StreamReader sr = new StreamReader(filePath))
@@ -59,9 +58,10 @@ namespace Lab3.Services
 
                         if (parts.Length == 2)
                         {
-                            int employeeCode = int.Parse(parts[0]);
-                            double amount = double.Parse(parts[1]);
-                            bonuses.Add(employeeCode, amount);
+                            Bonus bonus = new Bonus();
+                            bonus.EmployeeCode = int.Parse(parts[0]);
+                            bonus.Amount = double.Parse(parts[1]);
+                            bonuses.Add(bonus);
                         }
                     }
                 }

@@ -1,6 +1,9 @@
-using lab3.Models;
-using Lab3.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using Lab3.Services;
+using lab3.Models;
+using System.Linq;
 
 namespace lab3.Pages
 {
@@ -15,19 +18,21 @@ namespace lab3.Pages
             _logger = logger;
             FactoryViewModel = new FactoryViewModel();
         }
+
         public void OnGet()
         {
             // Читання даних з файлів
             DataReader dataReader = new DataReader();
             List<Factory> factories = dataReader.ReadFactories("factory.txt");
-            Dictionary<int, double> bonuses = dataReader.ReadBonuses("bonuses.txt");
-			// Логіка для максимальної зарплати за цехом за стаж від 10 до 20
-			Dictionary<int, double> maxSalaryByDepartment = new Dictionary<int, double>();
+            List<Bonus> bonuses = dataReader.ReadBonusList("bonuses.txt");
+
+            // Логіка для максимальної зарплати за цехом за стаж від 10 до 20
+            Dictionary<int, double> maxSalaryByDepartment = new Dictionary<int, double>();
             foreach (var factory in factories)
             {
                 if (factory.Experience >= 10 && factory.Experience <= 20)
                 {
-                    double totalSalary = factory.Salary + (bonuses.ContainsKey(factory.EmployeeCode) ? bonuses[factory.EmployeeCode] : 0);
+                    double totalSalary = factory.Salary + (bonuses.FirstOrDefault(bonus => bonus.EmployeeCode == factory.EmployeeCode)?.Amount ?? 0);
                     if (!maxSalaryByDepartment.ContainsKey(factory.DepartmentNumber) || totalSalary > maxSalaryByDepartment[factory.DepartmentNumber])
                     {
                         maxSalaryByDepartment[factory.DepartmentNumber] = totalSalary;
