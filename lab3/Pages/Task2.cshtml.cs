@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using Lab3.Services;
 using lab3.Models;
-using System.Linq;
 
 namespace lab3.Pages
 {

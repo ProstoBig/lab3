@@ -1,0 +1,25 @@
+﻿@page
+@model lab3.Pages.BonusesModel
+@{
+    ViewData["Title"] = "Bonuses";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee Code</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bonus in Model.Bonuses)
+        {
+            <tr>
+                <td>@bonus.EmployeeCode</td>
+                <td>@bonus.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>

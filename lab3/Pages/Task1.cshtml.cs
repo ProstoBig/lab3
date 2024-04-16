@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using Lab3.Services;
 using lab3.Models;
-using System.Linq;
 
 namespace Lab3.Pages
 {
@@ -30,17 +27,13 @@ namespace Lab3.Pages
             int femaleEmployeesWithBonusCount = factories.Count(factory => factory.Gender == "Female" && bonuses.Any(bonus => bonus.EmployeeCode == factory.EmployeeCode));
             FactoryViewModel.FemaleEmployeesWithBonusCount = femaleEmployeesWithBonusCount;
 
-            // Логіка для максимальної зарплати за цехом за стаж від 10 до 20
             Dictionary<int, double> maxSalaryByDepartment = new Dictionary<int, double>();
             foreach (var factory in factories)
             {
-                if (factory.Experience >= 10 && factory.Experience <= 20)
+                double totalSalary = factory.Salary + (bonuses.FirstOrDefault(bonus => bonus.EmployeeCode == factory.EmployeeCode)?.Amount ?? 0);
+                if (!maxSalaryByDepartment.ContainsKey(factory.DepartmentNumber) || totalSalary > maxSalaryByDepartment[factory.DepartmentNumber])
                 {
-                    double totalSalary = factory.Salary + (bonuses.FirstOrDefault(bonus => bonus.EmployeeCode == factory.EmployeeCode)?.Amount ?? 0);
-                    if (!maxSalaryByDepartment.ContainsKey(factory.DepartmentNumber) || totalSalary > maxSalaryByDepartment[factory.DepartmentNumber])
-                    {
-                        maxSalaryByDepartment[factory.DepartmentNumber] = totalSalary;
-                    }
+                    maxSalaryByDepartment[factory.DepartmentNumber] = totalSalary;
                 }
             }
             FactoryViewModel.MaxSalaryByDepartment = maxSalaryByDepartment;
