@@ -10,7 +10,7 @@
 <body>
     <h1>Завдання 2</h1>
 
-    <h2>Максимальна зарплата для кожного цеху:</h2>
+    <h2>Максимальна зарплата для кожного цеху працівників з стажем роботи 10-20 років:</h2>
     @foreach (var department in Model.FactoryViewModel.MaxSalaryByDepartment)
     {
         <p>Цех @department.Key: @department.Value</p>
