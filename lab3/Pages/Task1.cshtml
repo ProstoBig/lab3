@@ -11,7 +11,13 @@
 <body>
     <h1>Завдання 1</h1>
 
-    <h2>Кількість посад жіночих працівників з премією: @Model.FactoryViewModel.FemaleEmployeesWithBonusCount</h2>
+    <h2>Кількість посад жіночих працівників з премією:</h2>
+    <ul>
+        @foreach (var position in Model.FactoryViewModel.FemaleEmployeesWithBonus)
+        {
+            <li>@position.Key: @position.Value</li>
+        }
+    </ul>
 
 </body>
 </html>

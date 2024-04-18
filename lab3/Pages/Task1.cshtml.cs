@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Lab3.Services;
 using lab3.Models;
+using System.Linq;
 
 namespace Lab3.Pages
 {
@@ -18,25 +19,16 @@ namespace Lab3.Pages
 
         public void OnGet()
         {
-            // Читання даних з файлів
             DataReader dataReader = new DataReader();
             List<Factory> factories = dataReader.ReadFactories("factory.txt");
             List<Bonus> bonuses = dataReader.ReadBonusList("bonuses.txt");
 
-            // Виконання завдань
-            int femaleEmployeesWithBonusCount = factories.Count(factory => factory.Gender == "Female" && bonuses.Any(bonus => bonus.EmployeeCode == factory.EmployeeCode));
-            FactoryViewModel.FemaleEmployeesWithBonusCount = femaleEmployeesWithBonusCount;
+            Dictionary<string, int> femaleEmployeesWithBonusByPosition = factories
+                .Where(factory => factory.Gender == "Female" && bonuses.Any(bonus => bonus.EmployeeCode == factory.EmployeeCode))
+                .GroupBy(factory => factory.Position)
+                .ToDictionary(group => group.Key, group => group.Count());
 
-            Dictionary<int, double> maxSalaryByDepartment = new Dictionary<int, double>();
-            foreach (var factory in factories)
-            {
-                double totalSalary = factory.Salary + (bonuses.FirstOrDefault(bonus => bonus.EmployeeCode == factory.EmployeeCode)?.Amount ?? 0);
-                if (!maxSalaryByDepartment.ContainsKey(factory.DepartmentNumber) || totalSalary > maxSalaryByDepartment[factory.DepartmentNumber])
-                {
-                    maxSalaryByDepartment[factory.DepartmentNumber] = totalSalary;
-                }
-            }
-            FactoryViewModel.MaxSalaryByDepartment = maxSalaryByDepartment;
+            FactoryViewModel.FemaleEmployeesWithBonus = femaleEmployeesWithBonusByPosition;
         }
     }
 }

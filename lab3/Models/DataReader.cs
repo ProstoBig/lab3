@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using lab3.Models;
+﻿using lab3.Models;
 
 namespace Lab3.Services
 {
@@ -103,5 +100,23 @@ namespace Lab3.Services
 
             return users;
         }
+        public void WriteUsers(string filePath, List<User> users)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(filePath, append: true))
+                {
+                    foreach (var user in users)
+                    {
+                        sw.WriteLine($"{user.Username},{user.Password}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + ex.Message);
+            }
+        }
+
     }
 }

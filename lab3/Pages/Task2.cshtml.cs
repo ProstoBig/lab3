@@ -18,7 +18,6 @@ namespace lab3.Pages
 
         public void OnGet()
         {
-            // Читання даних з файлів
             DataReader dataReader = new DataReader();
             List<Factory> factories = dataReader.ReadFactories("factory.txt");
             List<Bonus> bonuses = dataReader.ReadBonusList("bonuses.txt");
