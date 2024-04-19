@@ -3,24 +3,41 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using lab3.Models;
 using Lab3.Services;
 using System;
+using System.Collections.Generic;
 
 namespace lab3.Pages
 {
     public class RegistrationModel : PageModel
     {
+        private readonly DataReader _dataReader;
+
         [BindProperty]
         public User User { get; set; }
+
+        public RegistrationModel(DataReader dataReader)
+        {
+            _dataReader = dataReader;
+        }
 
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                DataReader dataReader = new DataReader();
-                User existingUser = dataReader.ReadUsers("users.txt").Find(u => u.Username == User.Username);
+                List<User> existingUsers = _dataReader.ReadUsers("users.txt");
+
+                User existingUser = null;
+                foreach (var user in existingUsers)
+                {
+                    if (user.Username == User.Username)
+                    {
+                        existingUser = user;
+                        break;
+                    }
+                }
 
                 if (existingUser == null)
                 {
-                    dataReader.WriteUsers("users.txt", new List<User> { User });
+                    _dataReader.WriteUsers("users.txt", User);
                     return RedirectToPage("/Index");
                 }
                 else

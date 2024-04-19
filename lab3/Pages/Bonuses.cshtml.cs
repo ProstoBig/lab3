@@ -1,46 +1,24 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Lab3.Services;
 using lab3.Models;
+using System.Collections.Generic;
 
 namespace lab3.Pages
 {
     public class BonusesModel : PageModel
     {
+        private readonly DataReader _dataReader;
+
         public List<Bonus> Bonuses { get; set; }
+
+        public BonusesModel(DataReader dataReader)
+        {
+            _dataReader = dataReader;
+        }
 
         public void OnGet()
         {
-            // Завантаження даних з файлу bonuses.txt
-            Bonuses = ReadBonuses("bonuses.txt");
-        }
-
-        private List<Bonus> ReadBonuses(string filePath)
-        {
-            List<Bonus> bonuses = new List<Bonus>();
-            try
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        string[] parts = line.Split(',');
-
-                        if (parts.Length == 2)
-                        {
-                            Bonus bonus = new Bonus();
-                            bonus.EmployeeCode = int.Parse(parts[0]);
-                            bonus.Amount = double.Parse(parts[1]);
-                            bonuses.Add(bonus);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred while reading the file: " + ex.Message);
-            }
-
-            return bonuses;
+            Bonuses = _dataReader.GetBonuses();
         }
     }
 }
