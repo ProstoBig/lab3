@@ -24,7 +24,7 @@ namespace lab3.Pages
 
         public IActionResult OnPost()
         {
-            var users = _dataReader.ReadUsers("users.txt");
+            var users = _dataReader.ReadUsers("appdata/users.txt");
 
             foreach (var user in users)
             {

@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using lab3.Models;
 using Lab3.Services;
-using System;
-using System.Collections.Generic;
 
 namespace lab3.Pages
 {
@@ -23,7 +21,7 @@ namespace lab3.Pages
         {
             if (ModelState.IsValid)
             {
-                List<User> existingUsers = _dataReader.ReadUsers("users.txt");
+                List<User> existingUsers = _dataReader.ReadUsers("appdata/users.txt");
 
                 User existingUser = null;
                 foreach (var user in existingUsers)
@@ -37,7 +35,7 @@ namespace lab3.Pages
 
                 if (existingUser == null)
                 {
-                    _dataReader.WriteUsers("users.txt", User);
+                    _dataReader.WriteUsers("appdata/users.txt", User);
                     return RedirectToPage("/Index");
                 }
                 else

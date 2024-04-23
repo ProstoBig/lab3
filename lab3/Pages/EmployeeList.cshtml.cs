@@ -1,24 +1,34 @@
 using Lab3.Services;
 using lab3.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-
+using Microsoft.Extensions.Caching.Memory;
 namespace lab3.Pages
 {
     public class EmployeeListModel : PageModel
     {
-        private readonly DataReader _dataReader;
+        private readonly IMemoryCache _cache;
 
         public List<Factory> Employees { get; private set; }
 
-        public EmployeeListModel(DataReader dataReader)
+        public EmployeeListModel(IMemoryCache cache)
         {
-            _dataReader = dataReader;
+            _cache = cache;
         }
 
         public void OnGet()
         {
-            Employees = _dataReader.GetFactories();
+            Employees = _cache.Get<List<Factory>>("Employees");
+
+            if (Employees == null)
+            {
+                var dataReader = new DataReader(_cache);
+                Employees = dataReader.GetFactories();
+
+                _cache.Set("Employees", Employees, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                });
+            }
         }
     }
 }

@@ -1,25 +1,45 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using Lab3.Services;
+using Microsoft.Extensions.Caching.Memory;
 using lab3.Models;
-using System.Collections.Generic;
+using Lab3.Services;
 
 namespace Lab3.Pages
 {
     public class Task1Model : PageModel
     {
         private readonly ILogger<Task1Model> _logger;
-        private readonly DataReader _dataReader;
+        private readonly IMemoryCache _cache;
 
         public FactoryViewModel FactoryViewModel { get; set; }
 
-        public Task1Model(ILogger<Task1Model> logger, DataReader dataReader)
+        public Task1Model(ILogger<Task1Model> logger, IMemoryCache cache)
         {
             _logger = logger;
-            _dataReader = dataReader;
+            _cache = cache;
             FactoryViewModel = new FactoryViewModel();
-            List<Factory> factories = _dataReader.GetFactories();
-            List<Bonus> bonuses = _dataReader.GetBonuses();
+        }
+
+        public void OnGet()
+        {
+            List<Factory> factories = _cache.Get<List<Factory>>("Factories");
+            List<Bonus> bonuses = _cache.Get<List<Bonus>>("Bonuses");
+
+            if (factories == null || bonuses == null)
+            {
+                var dataReader = new DataReader(_cache);
+                factories = dataReader.GetFactories();
+                bonuses = dataReader.GetBonuses();
+
+                _cache.Set("Factories", factories, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                });
+
+                _cache.Set("Bonuses", bonuses, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                });
+            }
 
             Dictionary<string, int> femaleEmployeesWithBonusByPosition = new Dictionary<string, int>();
 
@@ -39,11 +59,6 @@ namespace Lab3.Pages
             }
 
             FactoryViewModel.FemaleEmployeesWithBonus = femaleEmployeesWithBonusByPosition;
-        }
-
-        public void OnGet()
-        {
-
         }
 
         private bool HasBonus(List<Bonus> bonuses, int employeeCode)
